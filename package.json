@@ -1,0 +1,22 @@
+{
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "create:db": "docker compose up -d postgres",
+    "init:migrate:dev": "npx prisma migrate dev --name init",
+    "init:db": "npm run create:db & npm run init:migrate:dev"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.7.0",
+    "@prisma/client": "^5.9.1",
+    "env": "^0.0.2",
+    "hono": "^3.12.8",
+    "postgres": "^3.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.16",
+    "prisma": "^5.9.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^3.12.2",
+    "typescript": "^5.3.3"
+  }
+}

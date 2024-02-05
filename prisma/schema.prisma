@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id        String     @id @default(uuid())
+  email     String     @unique
+  name      String?
+  password  String
+  posts     Posts[]
+  comments  Comments[]
+  boards    Boards[]
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @default(now()) @map("updated_at")
+
+  @@map("users")
+}
+
+model Boards {
+  id        String      @id @default(uuid())
+  posts     Posts[]
+  boardTags BoardTags[]
+  owner     Users       @relation(fields: [ownerId], references: [id])
+  ownerId   String      @map("owner_id")
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @default(now()) @map("updated_at")
+
+  @@map("boards")
+}
+
+model Posts {
+  id        String     @id @default(uuid())
+  title     String     @unique
+  content   String?
+  published Boolean    @default(false)
+  author    Users      @relation(fields: [authorId], references: [id])
+  authorId  String     @map("author_id")
+  board     Boards     @relation(fields: [boardId], references: [id])
+  boardId   String     @map("board_id")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  comments  Comments[]
+
+  @@map("posts")
+}
+
+model Comments {
+  id        String   @id @default(uuid())
+  text      String
+  post      Posts?   @relation(fields: [postId], references: [id])
+  postId    String?  @map("post_id")
+  author    Users    @relation(fields: [authorId], references: [id])
+  authorId  String   @map("author_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("comments")
+}
+
+model Tags {
+  id        String      @id @default(uuid())
+  name      String      @unique
+  boardTags BoardTags[]
+
+  @@map("tags")
+}
+
+model BoardTags {
+  board   Boards @relation(fields: [boardId], references: [id])
+  boardId String @map("board_id")
+  tag     Tags   @relation(fields: [tagId], references: [id])
+  tagId   String @map("tag_id")
+
+  @@id([boardId, tagId])
+  @@map("board_tags")
+}
