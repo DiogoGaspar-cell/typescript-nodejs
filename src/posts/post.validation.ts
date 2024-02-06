@@ -1,25 +1,27 @@
 import { z } from "zod";
-import { UUIDValidation, buildGetValidation } from "../utils/validation";
+import {
+  BooleanQueryValidationEnum,
+  SortOrderQueryValidationEnum,
+  UUIDValidation,
+} from "../utils/validation";
 import { PostsOrderBy } from "./dto/post.dto";
 
-export const GetPostByIdValidation = z.object({
+export const IdValidation = z.object({
   id: UUIDValidation,
 });
 
-export const GetAllPostsValidation = buildGetValidation(
-  {
-    sortOrder: { default: "DESC" },
-    sortBy: { options: PostsOrderBy, default: PostsOrderBy.CREATED_AT },
-    q: { max: 50 },
-  },
-  {
-    authorId: UUIDValidation.optional(),
-    boardId: UUIDValidation.optional(),
-    start: z.string().datetime().optional(),
-    end: z.string().datetime().optional(),
-    isPublished: z.boolean().default(true).optional(),
-  }
-);
+export const GetAllPostsValidation = z.object({
+  sortBy: z.nativeEnum(PostsOrderBy).optional(),
+  authorId: UUIDValidation.optional(),
+  boardId: UUIDValidation.optional(),
+  start: z.string().datetime().optional(),
+  end: z.string().datetime().optional(),
+  isPublished: z.enum(BooleanQueryValidationEnum).optional(),
+  q: z.string().max(50).optional(),
+  page: z.string().regex(/^[1-9]\d*$/),
+  perPage: z.enum(BooleanQueryValidationEnum).optional(),
+  sortOrder: z.enum(SortOrderQueryValidationEnum).optional(),
+});
 
 export const CreatePostValidation = z.object({
   title: z.string().max(50),
@@ -27,4 +29,10 @@ export const CreatePostValidation = z.object({
   published: z.boolean().optional(),
   authorId: UUIDValidation,
   boardId: UUIDValidation,
+});
+
+export const UpdatePostValidation = z.object({
+  title: z.string().max(50).optional(),
+  content: z.string().max(255).optional(),
+  published: z.boolean().optional(),
 });

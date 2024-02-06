@@ -16,7 +16,7 @@ export type PostsWhereDto = {
 export type GetPostsDto = PostsWhereDto & {
   page: number;
   perPage: number;
-  sortOrder: Prisma.SortOrder;
+  sortOrder: "ASC" | "DESC";
   sortBy: PostsOrderBy;
 };
 
