@@ -47,7 +47,7 @@ export class PostRepository implements IPostRepository {
     const skip = Math.max((page - 1) * perPage, 0);
 
     const orderBy: Prisma.PostsOrderByWithRelationInput = {
-      [sortBy]: sortOrder,
+      [sortBy]: sortOrder.toLowerCase() as Prisma.SortOrder,
     };
 
     const where = this.buildWhere({
