@@ -19,27 +19,29 @@ model Users {
   comments  Comments[]
   boards    Boards[]
   createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime   @default(now()) @map("updated_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
 
   @@map("users")
 }
 
 model Boards {
-  id        String      @id @default(uuid())
-  posts     Posts[]
-  boardTags BoardTags[]
-  owner     Users       @relation(fields: [ownerId], references: [id])
-  ownerId   String      @map("owner_id")
-  createdAt DateTime    @default(now()) @map("created_at")
-  updatedAt DateTime    @default(now()) @map("updated_at")
+  id          String      @id @default(uuid())
+  title       String      @unique @db.VarChar(50)
+  description String      @db.VarChar(255)
+  posts       Posts[]
+  boardTags   BoardTags[]
+  owner       Users       @relation(fields: [ownerId], references: [id])
+  ownerId     String      @map("owner_id")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
 
   @@map("boards")
 }
 
 model Posts {
   id        String     @id @default(uuid())
-  title     String     @unique
-  content   String?
+  title     String     @unique @db.VarChar(50)
+  content   String     @db.VarChar(255)
   published Boolean    @default(false)
   author    Users      @relation(fields: [authorId], references: [id])
   authorId  String     @map("author_id")
@@ -60,7 +62,7 @@ model Comments {
   author    Users    @relation(fields: [authorId], references: [id])
   authorId  String   @map("author_id")
   createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("comments")
 }

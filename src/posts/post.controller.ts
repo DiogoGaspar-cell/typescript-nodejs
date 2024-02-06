@@ -19,8 +19,7 @@ export class PostController {
       sortBy,
       page,
       perPage,
-      title,
-      content,
+      q,
       authorId,
       boardId,
       start,
@@ -33,14 +32,13 @@ export class PostController {
       sortBy,
       page: Number(page),
       perPage: Number(perPage),
-      title,
-      content,
+      q,
       authorId,
       boardId,
-      start,
-      end,
-      isPublished,
-    } as unknown as GetPostsDto);
+      ...(start && { start: new Date(start) }),
+      ...(end && { end: new Date(end) }),
+      ...(isPublished !== undefined && { isPublished: Boolean(isPublished) }),
+    } as GetPostsDto);
 
     return c.json(collection);
   }

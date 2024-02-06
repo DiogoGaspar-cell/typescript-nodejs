@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 
 export enum PostsOrderBy {
   CREATED_AT = "createdAt",
-}
+};
 
 export type PostsWhereDto = {
   authorId?: string;
@@ -10,8 +10,7 @@ export type PostsWhereDto = {
   start?: Date;
   end?: Date;
   isPublished?: boolean;
-  title?: string;
-  content?: string;
+  q?: string;
 };
 
 export type GetPostsDto = PostsWhereDto & {

@@ -36,8 +36,7 @@ export class PostRepository implements IPostRepository {
       sortBy,
       page,
       perPage,
-      title,
-      content,
+      q,
       authorId,
       boardId,
       start,
@@ -52,8 +51,7 @@ export class PostRepository implements IPostRepository {
     };
 
     const where = this.buildWhere({
-      title,
-      content,
+      q,
       authorId,
       boardId,
       start,
@@ -119,28 +117,28 @@ export class PostRepository implements IPostRepository {
   }
 
   private buildWhere(data: PostsWhereDto): Prisma.PostsWhereInput {
-    const { title, content, authorId, boardId, start, end, isPublished } = data;
+    const { q, authorId, boardId, start, end, isPublished } = data;
 
     let where: Prisma.PostsWhereInput = {};
     let createdAt: Prisma.DateTimeFilter = {};
 
-    if (title !== undefined) {
+    if (q !== undefined) {
       where = {
         ...where,
-        title: {
-          contains: title,
-          mode: "insensitive",
-        },
-      };
-    }
-
-    if (content !== undefined) {
-      where = {
-        ...where,
-        content: {
-          contains: content,
-          mode: "insensitive",
-        },
+        OR: [
+          {
+            title: {
+              contains: q,
+              mode: "insensitive",
+            },
+          },
+          {
+            content: {
+              contains: q,
+              mode: "insensitive",
+            },
+          },
+        ],
       };
     }
 

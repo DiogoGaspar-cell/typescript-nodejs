@@ -5,7 +5,7 @@ import { PostService } from "./post.service";
 import { PostController } from "./post.controller";
 import postRouter from "./post.router";
 
-export const posts = (app: Hono, prisma: PrismaClient) => {
+export const Posts = (app: Hono, prisma: PrismaClient) => {
   const postRepository = new PostRepository(prisma);
   const postService = new PostService(postRepository);
   const postController = new PostController(postService);
