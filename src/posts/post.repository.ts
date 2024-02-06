@@ -158,6 +158,7 @@ export class PostRepository implements IPostRepository {
 
     return {
       ...where,
+      createdAt,
       ...(authorId !== undefined && { authorId }),
       ...(boardId !== undefined && { boardId }),
       ...(isPublished !== undefined && { published: isPublished }),

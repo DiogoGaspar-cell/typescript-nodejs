@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   BooleanQueryValidationEnum,
+  PerPageQueryValidationEnum,
   SortOrderQueryValidationEnum,
   UUIDValidation,
 } from "../utils/validation";
@@ -19,7 +20,7 @@ export const GetAllPostsValidation = z.object({
   isPublished: z.enum(BooleanQueryValidationEnum).optional(),
   q: z.string().max(50).optional(),
   page: z.string().regex(/^[1-9]\d*$/),
-  perPage: z.enum(BooleanQueryValidationEnum).optional(),
+  perPage: z.enum(PerPageQueryValidationEnum),
   sortOrder: z.enum(SortOrderQueryValidationEnum).optional(),
 });
 

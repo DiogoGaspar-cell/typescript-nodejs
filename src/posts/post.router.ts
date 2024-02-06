@@ -43,7 +43,7 @@ const getAllPosts = (app: Hono, postService: IPostService) =>
       boardId,
       ...(start && { start: new Date(start) }),
       ...(end && { end: new Date(end) }),
-      ...(isPublished !== undefined && { isPublished: Boolean(isPublished) }),
+      ...(isPublished !== undefined && { isPublished: isPublished === "true" }),
     } as GetPostsDto);
 
     return c.json(collection);
