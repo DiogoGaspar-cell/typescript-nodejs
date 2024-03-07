@@ -17,7 +17,7 @@ const posts = Posts(prisma);
 
 app.route("/posts", posts);
 
-const port = 3333;
+const port = Number(process.env.PORT) || 3001;
 console.log(`Server is running on port ${port}`);
 
 serve({
